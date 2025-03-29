@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import { SanityLive } from "@/sanity/lib/live";
+import { inter } from "../_lib/fonts";
 
 export const metadata: Metadata = {
   title: "News HomePage",
@@ -13,11 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        {children}
-        <SanityLive />
-      </body>
-    </html>
+    <main className={`${inter.variable}`}>
+      {children}
+      <SanityLive />
+    </main>
   );
 }
