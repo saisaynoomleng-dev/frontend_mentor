@@ -1,3 +1,5 @@
+import { MAIN_NAV_QUERYResult } from "@/sanity/types"
+
 // bounded type
 export type BoundedType = {
     as?: React.ElementType
@@ -12,4 +14,9 @@ export type ButtonType = {
     children: React.ReactNode
     size?: 'lg' | 'md' | 'xl'
     variant?: 'default' | 'cta'
+}
+
+// main nav links
+export type MainNavLinkProps = {
+    link: NonNullable<NonNullable<MAIN_NAV_QUERYResult>['link']>[number]
 }
