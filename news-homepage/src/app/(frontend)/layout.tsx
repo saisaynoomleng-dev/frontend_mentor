@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import { SanityLive } from "@/sanity/lib/live";
 import { inter } from "../_lib/fonts";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "News HomePage",
@@ -15,6 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <main className={`${inter.variable}`}>
+      <Header />
       {children}
       <SanityLive />
     </main>

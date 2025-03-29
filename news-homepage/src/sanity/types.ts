@@ -68,6 +68,33 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type Navlink = {
+  _id: string;
+  _type: "navlink";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  linkName?: string;
+  url?: string;
+};
+
+export type NavMenu = {
+  _id: string;
+  _type: "navMenu";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  link?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "navlink";
+  }>;
+};
+
 export type NewPost = {
   _id: string;
   _type: "newPost";
@@ -284,7 +311,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | NewPost | BlockContent | Blog | Category | Author | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Slug;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Navlink | NavMenu | NewPost | BlockContent | Blog | Category | Author | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: BLOGS_QUERY
@@ -380,6 +407,14 @@ export type NEW_POST_QUERYResult = {
     description: string | null;
   } | null;
 } | null;
+// Variable: MAIN_NAV_QUERY
+// Query: *[_type == 'navMenu'   && slug.current == 'main-nav-menu'][0]{    link[]->{      linkName,      url    }   }
+export type MAIN_NAV_QUERYResult = {
+  link: Array<{
+    linkName: string | null;
+    url: string | null;
+  }> | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -389,5 +424,6 @@ declare module "@sanity/client" {
     "*[_type == 'blog'\n && slug.current == $slug][0]{\n  slug,\n  category->{\n    name},\n  title,\n  description,\n  publishedAt,\n  author->{\n    name,\n    description\n  },\n  image{\n    asset->{\n      url\n    }\n  }\n }": BLOG_QUERYResult;
     "*[_type == 'newPost'\n && defined(slug.current)][0...3]{\n    title,\n    subtitle,\n    publishedAt,\n    category->{\n      name\n    },\n    slug,\n    author->{\n      name\n    }\n } | order(publishedAt desc)": NEW_POSTS_QUERYResult;
     "*[_type == 'newPost'\n && slug.current == $slug][0]{\n    title,\n    subtitle,\n    publishedAt,\n    description,\n    category->{\n      name\n    },\n    author->{\n      name,\n      description\n    }\n }": NEW_POST_QUERYResult;
+    "*[_type == 'navMenu'\n   && slug.current == 'main-nav-menu'][0]{\n    link[]->{\n      linkName,\n      url\n    }\n   }": MAIN_NAV_QUERYResult;
   }
 }
